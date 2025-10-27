@@ -1,3 +1,4 @@
+/* ====== Global Reset ====== */
 * {
   margin: 0;
   padding: 0;
@@ -11,20 +12,42 @@ html, body {
   max-width: 100%;
 }
 
+/* ====== Home Container ====== */
 .home-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
- 
   color: #ffffff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   padding: 2rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
+/* === Subtle reveal when home first shows === */
+.home-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.85);
+  opacity: 0;
+  animation: fadeVeil 1.2s ease forwards;
+}
+
+@keyframes fadeVeil {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ====== Layout ====== */
 .main-content {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -32,12 +55,27 @@ html, body {
   align-items: center;
   max-width: 100%;
   width: 100%;
+  position: relative;
+  z-index: 2; /* ensures above veil */
 }
 
 .text-content {
   max-width: 600px;
 }
 
+/* ====== Fade-In Sequence ====== */
+.fade {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ====== Text Styles ====== */
 .hero-title {
   font-size: 3rem;
   font-weight: 700;
@@ -62,6 +100,7 @@ html, body {
   max-width: 800px;
 }
 
+/* ====== Buttons ====== */
 .hero-buttons {
   display: flex;
   gap: 1rem;
@@ -101,6 +140,7 @@ html, body {
   background: rgba(102, 126, 234, 0.1);
 }
 
+/* ====== Profile Card ====== */
 .profile-card-section {
   display: flex;
   flex-direction: column;
@@ -108,22 +148,22 @@ html, body {
   gap: 2rem;
 }
 
-/* Media Queries */
+/* ====== Responsive ====== */
 @media (max-width: 968px) {
   .main-content {
     grid-template-columns: 1fr;
     gap: 3rem;
     text-align: center;
   }
-  
+
   .text-content {
     max-width: 100%;
   }
-  
+
   .hero-buttons {
     justify-content: center;
   }
-  
+
   .description-blur {
     margin-left: auto;
     margin-right: auto;
@@ -134,15 +174,15 @@ html, body {
   .home-container {
     padding: 1.5rem;
   }
-  
+
   .hero-title {
     font-size: 2.5rem;
   }
-  
+
   .description-blur {
     font-size: 1rem;
   }
-  
+
   .main-content {
     gap: 2rem;
   }
@@ -152,16 +192,16 @@ html, body {
   .home-container {
     padding: 1rem;
   }
-  
+
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-buttons {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .btn {
     width: 200px;
   }

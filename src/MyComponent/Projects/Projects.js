@@ -8,7 +8,6 @@ export default function Projects() {
   const navigate = useNavigate();
 
   const handleItemClick = (item) => {
-    console.log("Card clicked:", item);
     navigate('/choose', { state: item });
   };
 
@@ -20,41 +19,38 @@ export default function Projects() {
       data-aos-duration="800"
       data-aos-once="true"
     >
-      <div className="project-content">
-        <h1
-          data-aos="fade-up"
+      <div className="project-header">
+        <h1 
+          data-aos="fade-up" 
           data-aos-duration="600"
-          data-aos-delay="200"
-          data-aos-once="true"
+          data-aos-delay="100"
         >
           My Projects
         </h1>
-        <p
-          data-aos="fade-up"
+        <p 
+          data-aos="fade-up" 
           data-aos-duration="600"
-          data-aos-delay="300"
-          data-aos-once="true"
+          data-aos-delay="200"
         >
-          Here's a curated set of projects that showcase my skills, creativity, 
-          and dedication to creating meaningful digital solutions.
+          Curated projects showcasing my skills, creativity, and dedication.
         </p>
-        
-        <div 
-          className="chroma-grid-container"
-          data-aos="fade-up"
-          data-aos-duration="600"
-          data-aos-delay="400"
-          data-aos-once="true"
-        >
-          <ChromaGrid
-            items={items}
-            onItemClick={handleItemClick}
-            radius={300}
-            damping={0.45}
-            fadeOut={0.6}
-            ease="power3.out"
-          />
-        </div>
+      </div>
+
+      <div 
+        className="chroma-grid-container"
+        data-aos="fade-up" 
+        data-aos-duration="800"
+        data-aos-delay="300"
+      >
+        <ChromaGrid
+          items={items}
+          onItemClick={handleItemClick}
+          radius={300}
+          damping={0.45}
+          fadeOut={0.6}
+          ease="power3.out"
+          columns={3}
+        />
       </div>
     </section>
   );

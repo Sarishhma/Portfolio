@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './Chat.css'
+import React, { useState, useEffect, useRef } from 'react';
+import './Chat.css';
 
 function Chat() {
   const [formData, setFormData] = useState({
@@ -10,6 +10,32 @@ function Chat() {
 
   const [status, setStatus] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const chatRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '-20px',
+      }
+    );
+
+    if (chatRef.current) {
+      observer.observe(chatRef.current);
+    }
+
+    return () => {
+      if (chatRef.current) {
+        observer.unobserve(chatRef.current);
+      }
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -24,13 +50,9 @@ function Chat() {
     setStatus('Sending...');
 
     try {
-      // FIXED: Remove trailing slash
       const backendUrl = 'https://protfolio-nextjs-ecru.vercel.app';
       const apiUrl = `${backendUrl}/api/send`;
       
-      console.log('🔄 Sending request to:', apiUrl);
-      console.log('📦 Request data:', formData);
-
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 
@@ -39,30 +61,22 @@ function Chat() {
         body: JSON.stringify(formData),
       });
 
-      console.log('📡 Response status:', res.status);
-
       if (!res.ok) {
-        // Get more details about the error
         const errorText = await res.text();
-        console.log('📡 Error response:', errorText);
         throw new Error(`HTTP ${res.status}: ${errorText}`);
       }
 
       const data = await res.json();
-      console.log('✅ Success response:', data);
-
-      setStatus('✅ Message sent successfully!');
+      setStatus('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
 
     } catch (err) {
-      console.error('❌ Detailed error:', err);
-      
       if (err.message.includes('Failed to fetch')) {
-        setStatus('❌ Network error: Cannot connect to server. This might be a CORS issue.');
+        setStatus('Network error: Cannot connect to server.');
       } else if (err.message.includes('404')) {
-        setStatus('❌ API endpoint not found (404). The /api/send endpoint does not exist.');
+        setStatus('API endpoint not found (404).');
       } else {
-        setStatus(`❌ Failed: ${err.message}`);
+        setStatus(`Failed: ${err.message}`);
       }
     } finally {
       setIsLoading(false);
@@ -70,13 +84,17 @@ function Chat() {
   };
 
   return (
-    <div className='All'>
-      <div className='first-container'>
-        <h1>Contact & Chat</h1>
-        <p>Get in touch with me or chat in real-time</p>
-        
-        <div className='chat-container'>
-          <form onSubmit={handleSubmit}>
+    <div className='contact-section' ref={chatRef}>
+      <div className='contact-header'>
+        <h2 className={`title-reveal ${isVisible ? 'revealed' : ''}`}>Get In Touch</h2>
+        <p className={`subtitle-reveal ${isVisible ? 'revealed' : ''}`}>
+          Let's discuss your project
+        </p>
+      </div>
+      
+      <div className={`contact-form ${isVisible ? 'revealed' : ''}`}>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
             <input 
               name="name" 
               placeholder="Your Name" 
@@ -85,6 +103,9 @@ function Chat() {
               required 
               disabled={isLoading}
             />
+          </div>
+          
+          <div className="form-group">
             <input 
               name="email" 
               type="email"
@@ -94,6 +115,9 @@ function Chat() {
               required 
               disabled={isLoading}
             />
+          </div>
+          
+          <div className="form-group">
             <textarea 
               name="message" 
               placeholder="Your Message" 
@@ -101,15 +125,20 @@ function Chat() {
               value={formData.message} 
               required 
               disabled={isLoading}
+              rows="4"
             />
-            <button type="submit" disabled={isLoading}>
-              {isLoading ? 'Sending...' : 'Send'}
-            </button>
-            <p className={status.includes('✅') ? 'success' : 'error'}>
+          </div>
+          
+          <button type="submit" disabled={isLoading} className="submit-btn">
+            {isLoading ? 'Sending...' : 'Send Message'}
+          </button>
+          
+          {status && (
+            <p className={`status ${status.includes('successfully') ? 'success' : 'error'}`}>
               {status}
             </p>
-          </form>
-        </div>
+          )}
+        </form>
       </div>
     </div>
   );

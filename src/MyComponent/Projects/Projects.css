@@ -1,143 +1,293 @@
-.project-section{
-    z-index: 100;
-    position: relative;
-  width: 100%;
+/* Projects.css */
+.project-section {
+  padding: 5rem 2rem;
   max-width: 1200px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
   color: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.project-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.project-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 15px rgba(150, 100, 255, 0.4);
+}
+
+.project-header p {
+  font-size: 1.2rem;
+  color: #cbd5e0;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Chroma Grid Container */
+.chroma-grid-container {
+  width: 100%;
   margin: 0 auto;
 }
-.choose-section {
-  z-index: 100;
-  position: relative;
-  height: 100vh;
 
-  width: 100vw;
- 
-  background: #0f172a;
+/* Override ChromaGrid styles for 3-column layout */
+.chroma-grid-container .chroma-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Individual grid items */
+.chroma-grid-container .chroma-grid-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(26, 32, 44, 0.8);
+  border: 1px solid rgba(150, 100, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  height: 300px; /* Fixed height for consistency */
+}
+
+.chroma-grid-container .chroma-grid-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 15px 35px rgba(150, 100, 255, 0.3),
+    0 0 0 1px rgba(150, 100, 255, 0.3);
+  border-color: rgba(150, 100, 255, 0.5);
+}
+
+/* Content inside grid items */
+.chroma-grid-container .chroma-grid-content {
+  width: 100%;
+  height: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  padding: 10px;
-  border-radius: 5px;
-
-}
-
-.project-card {
-  background: rgb(39, 39, 105);
-  border-radius: 20px;
-    max-height: 500px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-  overflow: hidden;
-  border: 2px solid #1e3a8a;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
-}
-
-.project-image-wrapper {
-  width: 100%;
-  overflow: hidden;
-}
-
-.project-image {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
-}
-
-.project-card:hover .project-image {
-  transform: scale(1.05);
-}
-
-.project-content {
-  padding: 1.5rem;
   text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
-.project-content h2 {
-  font-size: 1.8rem;
+.chroma-grid-container .chroma-grid-title {
+  font-size: 1.5rem;
+  font-weight: 600;
   color: #ffffff;
   margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.project-content p {
-  color: #cbd5e1;
+.chroma-grid-container .chroma-grid-description {
+  font-size: 0.95rem;
+  color: #cbd5e0;
+  line-height: 1.5;
   margin-bottom: 1rem;
 }
 
-.project-description {
-  font-size: 0.95rem;
+.chroma-grid-container .chroma-grid-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.chroma-grid-container .tech-tag {
+  background: rgba(150, 100, 255, 0.2);
   color: #e2e8f0;
-  margin-bottom: 1.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(150, 100, 255, 0.3);
 }
 
-.project-button {
-  display: inline-block;
-  text-decoration: none;
-  color: #fff;
-  background: linear-gradient(90deg, #3b82f6, #10b981);
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
+/* Background overlay for better text readability */
+.chroma-grid-container .chroma-grid-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(26, 32, 44, 0.9) 0%,
+    rgba(45, 55, 72, 0.8) 100%
+  );
+  z-index: 1;
 }
 
-.project-button:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(90deg, #2563eb, #059669);
+/* ===== RESPONSIVE MEDIA QUERIES ===== */
+
+/* Tablet - 2 columns */
+@media (max-width: 1024px) {
+  .project-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .project-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .project-header p {
+    font-size: 1.1rem;
+  }
+
+  .chroma-grid-container .chroma-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .chroma-grid-container .chroma-grid-item {
+    height: 280px;
+  }
 }
 
-/* Responsive */
+/* Large Mobile - 2 columns with smaller gap */
 @media (max-width: 768px) {
-  .project-card {
-    max-width: 90%;
+  .project-section {
+    padding: 3rem 1rem;
   }
 
-  .project-content h2 {
-    font-size: 1.5rem;
+  .project-header {
+    margin-bottom: 3rem;
   }
 
-  .project-description {
+  .project-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .project-header p {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .chroma-grid-container .chroma-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .chroma-grid-container .chroma-grid-item {
+    height: 250px;
+  }
+
+  .chroma-grid-container .chroma-grid-content {
+    padding: 1.5rem;
+  }
+
+  .chroma-grid-container .chroma-grid-title {
+    font-size: 1.3rem;
+  }
+
+  .chroma-grid-container .chroma-grid-description {
     font-size: 0.9rem;
   }
 }
-.X {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex ;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
-  background-color: transparent;
-  color: blue;
-   border: 2px solid #1e3a8a;
+
+/* Small Mobile - 1 column */
+@media (max-width: 640px) {
+  .project-section {
+    padding: 2.5rem 1rem;
+  }
+
+  .project-header h1 {
+    font-size: 2rem;
+  }
+
+  .chroma-grid-container .chroma-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .chroma-grid-container .chroma-grid-item {
+    height: 220px;
+  }
+
+  .chroma-grid-container .chroma-grid-content {
+    padding: 1.25rem;
+  }
+
+  .chroma-grid-container .chroma-grid-title {
+    font-size: 1.25rem;
+  }
+
+  .chroma-grid-container .chroma-grid-description {
+    font-size: 0.85rem;
+  }
+
+  .chroma-grid-container .tech-tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
 }
 
-.X:hover {
-  background: #e0e0e0;
-  transform: scale(1.1);
-  color: black;
+/* Extra Small Mobile */
+@media (max-width: 480px) {
+  .project-section {
+    padding: 2rem 0.75rem;
+  }
+
+  .project-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .project-header p {
+    font-size: 0.95rem;
+  }
+
+  .chroma-grid-container .chroma-grid {
+    gap: 0.75rem;
+  }
+
+  .chroma-grid-container .chroma-grid-item {
+    height: 200px;
+  }
+
+  .chroma-grid-container .chroma-grid-content {
+    padding: 1rem;
+  }
+
+  .chroma-grid-container .chroma-grid-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .chroma-grid-container .chroma-grid-description {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
 }
 
-.X:active {
-  transform: scale(0.95);
+/* Animation for grid items */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
+.chroma-grid-container .chroma-grid-item {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Stagger animation for grid items */
+.chroma-grid-container .chroma-grid-item:nth-child(1) { animation-delay: 0.1s; }
+.chroma-grid-container .chroma-grid-item:nth-child(2) { animation-delay: 0.2s; }
+.chroma-grid-container .chroma-grid-item:nth-child(3) { animation-delay: 0.3s; }
+.chroma-grid-container .chroma-grid-item:nth-child(4) { animation-delay: 0.4s; }
+.chroma-grid-container .chroma-grid-item:nth-child(5) { animation-delay: 0.5s; }
+.chroma-grid-container .chroma-grid-item:nth-child(6) { animation-delay: 0.6s; }
