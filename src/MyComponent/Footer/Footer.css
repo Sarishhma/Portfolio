@@ -1,0 +1,112 @@
+/* Footer.css - Transparent footer with centered socials & dock */
+
+/* Variables */
+
+:root {
+  --accent-color: rgb(49, 48, 49);
+  --icon-color: #ffffff;
+  --transition: 0.3s ease;
+}
+
+/* Footer layout */
+.footer-container {
+  z-index: 100;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  background: black;
+  margin: 0 auto;
+  padding: 1rem 0;
+  box-sizing: border-box; /* Add this */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  width: 100%; /* Ensure it doesn't overflow */
+  max-width: 100%; /* Prevent overflow */
+}
+
+/* Social icons area */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Social links (simple icons only) */
+.social-link {
+  color: var(--icon-color);
+  font-size: 1.8rem;
+  text-decoration: none;
+  transition: color var(--transition), transform var(--transition);
+  background: none;
+  border: none;
+  padding: 0.5rem;
+
+}
+
+/* Hover effect: color + scale */
+.social-link:hover {
+  color: rgb(226, 110, 226);
+  transform: translateY(-4px) scale(1.1);
+}
+
+/* Dock placement below socials */
+.footer-dock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Changed from 100px to auto */
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+/* Responsive: maintain stack on small screens */
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 1rem;
+    margin-top: 1rem;
+  }
+
+  .footer-content {
+    gap: 1rem;
+  }
+
+  .footer-social {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .social-link {
+    font-size: 1.5rem;
+  }
+
+  .footer-dock {
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-social {
+    gap: 0.8rem;
+  }
+  
+  .social-link {
+    font-size: 1.3rem;
+    padding: 0.3rem;
+  }
+}

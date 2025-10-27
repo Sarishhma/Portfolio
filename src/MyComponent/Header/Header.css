@@ -1,0 +1,96 @@
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.main {
+  color: white;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 90px;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+  box-sizing: border-box; /* Add this line */
+}
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.nav-bar {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+.nav-bar:hover {
+  color: #ccc;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+}
+
+.nav-links-container {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-links-container a {
+  color: #b0b0b0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: all 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-links-container a:hover {
+  color: #ffffff;
+}
+
+.nav-links-container a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+}
+
+.nav-links-container a:hover::after {
+  width: 100%;
+}
+
+/* Media Queries for responsive links */
+@media (max-width: 768px) {
+  .nav-links-container {
+    gap: 1.5rem;
+  }
+  
+  .nav-links-container a {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links-container {
+    gap: 1rem;
+  }
+  
+  .nav-links-container a {
+    font-size: 0.85rem;
+  }
+}
