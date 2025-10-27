@@ -9,6 +9,7 @@ function Chat() {
   });
 
   const [status, setStatus] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -19,55 +20,62 @@ function Chat() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    setStatus('Sending...');
 
     try {
-      const res = await fetch('http://localhost:5000/send', {
+      // FIXED: Remove trailing slash
+      const backendUrl = 'https://protfolio-nextjs-ecru.vercel.app';
+      const apiUrl = `${backendUrl}/api/send`;
+      
+      console.log('🔄 Sending request to:', apiUrl);
+      console.log('📦 Request data:', formData);
+
+      const res = await fetch(apiUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(formData),
       });
 
-      const data = await res.json();
-      setStatus(data.message);
-    } catch (err) {
-      setStatus('Failed to send message.');
-    }
+      console.log('📡 Response status:', res.status);
 
-    setFormData({ name: '', email: '', message: '' });
+      if (!res.ok) {
+        // Get more details about the error
+        const errorText = await res.text();
+        console.log('📡 Error response:', errorText);
+        throw new Error(`HTTP ${res.status}: ${errorText}`);
+      }
+
+      const data = await res.json();
+      console.log('✅ Success response:', data);
+
+      setStatus('✅ Message sent successfully!');
+      setFormData({ name: '', email: '', message: '' });
+
+    } catch (err) {
+      console.error('❌ Detailed error:', err);
+      
+      if (err.message.includes('Failed to fetch')) {
+        setStatus('❌ Network error: Cannot connect to server. This might be a CORS issue.');
+      } else if (err.message.includes('404')) {
+        setStatus('❌ API endpoint not found (404). The /api/send endpoint does not exist.');
+      } else {
+        setStatus(`❌ Failed: ${err.message}`);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div 
-      className='All'
-      data-aos="fade-up"
-      data-aos-duration="800"
-      data-aos-once="true"
-    >
+    <div className='All'>
       <div className='first-container'>
-        <h1
-          data-aos="fade-up"
-          data-aos-duration="600"
-          data-aos-delay="200"
-          data-aos-once="true"
-        >
-          Contact & Chat
-        </h1>
-        <p
-          data-aos="fade-up"
-          data-aos-duration="600"
-          data-aos-delay="300"
-          data-aos-once="true"
-        >
-          Get in touch with me or chat in real-time
-        </p>
+        <h1>Contact & Chat</h1>
+        <p>Get in touch with me or chat in real-time</p>
         
-        <div 
-          className='chat-container'
-          data-aos="fade-up"
-          data-aos-duration="600"
-          data-aos-delay="400"
-          data-aos-once="true"
-        >
+        <div className='chat-container'>
           <form onSubmit={handleSubmit}>
             <input 
               name="name" 
@@ -75,21 +83,16 @@ function Chat() {
               onChange={handleChange} 
               value={formData.name} 
               required 
-              data-aos="fade-up"
-              data-aos-duration="500"
-              data-aos-delay="500"
-              data-aos-once="true"
+              disabled={isLoading}
             />
             <input 
               name="email" 
+              type="email"
               placeholder="Your Email" 
               onChange={handleChange} 
               value={formData.email} 
               required 
-              data-aos="fade-up"
-              data-aos-duration="500"
-              data-aos-delay="600"
-              data-aos-once="true"
+              disabled={isLoading}
             />
             <textarea 
               name="message" 
@@ -97,26 +100,12 @@ function Chat() {
               onChange={handleChange} 
               value={formData.message} 
               required 
-              data-aos="fade-up"
-              data-aos-duration="500"
-              data-aos-delay="700"
-              data-aos-once="true"
+              disabled={isLoading}
             />
-            <button 
-              type="submit"
-              data-aos="fade-up"
-              data-aos-duration="500"
-              data-aos-delay="800"
-              data-aos-once="true"
-            >
-              Send
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? 'Sending...' : 'Send'}
             </button>
-            <p
-              data-aos="fade-up"
-              data-aos-duration="500"
-              data-aos-delay="900"
-              data-aos-once="true"
-            >
+            <p className={status.includes('✅') ? 'success' : 'error'}>
               {status}
             </p>
           </form>
