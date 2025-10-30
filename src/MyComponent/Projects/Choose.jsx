@@ -1,4 +1,3 @@
-
 import React from "react";
 import "./Projects.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,10 +8,7 @@ export default function Choose() {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    // Navigate back to home route
     navigate("/", { replace: true });
-
-    // Wait a short moment for the page to render, then scroll
     setTimeout(() => {
       const section = document.getElementById("projects");
       if (section) {
@@ -40,12 +36,13 @@ export default function Choose() {
             X
           </button>
           <h2>{item.title}</h2>
-          <p>{item.subtitle}</p>
+          <p className="project-subtitle">{item.subtitle}</p>
           <p className="project-description">
-            {item.description
-              ? item.description
-              : "No additional description provided."}
+            {item.description}
           </p>
+          
+
+          
           {item.url && (
             <a
               href={item.url}
@@ -53,7 +50,7 @@ export default function Choose() {
               rel="noreferrer"
               className="project-button"
             >
-              Source Code
+              Live View
             </a>
           )}
         </div>
