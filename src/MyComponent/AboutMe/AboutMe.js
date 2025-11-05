@@ -9,48 +9,45 @@ const stats = [
 
 export default function AboutMe() {
   return (
-    <div className="About-all">
+    <div className="About-all w-full">
       <div className="Blur">
 
         {/* Text Section */}
-        <div 
-          className="text-content"
+        <div
+          className="text-content w-full px-6 md:px-12 lg:px-24"
           data-aos="fade-up"
           data-aos-duration="700"
           data-aos-delay="100"
         >
-          <h1 className="about-title" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+          <h1
+            className="about-title text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6"
+            data-aos="fade-up"
+            data-aos-duration="600"
+            data-aos-delay="200"
+          >
             About Me
           </h1>
-          <p className="paragraph" data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+          <p
+            className="paragraph text-justify text-base md:text-lg lg:text-xl "
+            data-aos="fade-up"
+            data-aos-duration="700"
+            data-aos-delay="300"
+          >
             I'm Sarishma Zimba, a full-stack developer passionate about building modern, high-performance web applications with a focus on clean design and seamless user experience. I enjoy combining creativity with technical precision to craft impactful digital solutions. With attention to both functionality and aesthetics, I aim to develop products that are efficient, intuitive, and engaging. I’m continuously exploring new tools and frameworks to deliver innovative solutions that help users and businesses thrive in the digital era.
           </p>
         </div>
 
-        {/* Divider */}
-        <div 
-          className="vertical-divider"
-          data-aos="fade-up"
-          data-aos-duration="600"
-          data-aos-delay="400"
-        ></div>
-
-        {/* Lanyard */}
-        <div 
-          className="lanyard-container"
-          data-aos="fade-up"
-          data-aos-duration="600"
-          data-aos-delay="500"
-        >
-          <Lanyard position={[0, 0, 15]} gravity={[0, -40, 0]} />
-        </div>
-
         {/* Stats Section */}
-        <div className="stats-section" data-aos="fade-up" data-aos-duration="700" data-aos-delay="600">
+        <div
+          className="stats-section"
+          data-aos="fade-up"
+          data-aos-duration="700"
+          data-aos-delay="600"
+        >
           <div className="stats-grid">
             {stats.map(stat => (
-              <div 
-                key={stat.label} 
+              <div
+                key={stat.label}
                 className="stat-item"
                 data-aos="fade-up"
                 data-aos-duration="400"
@@ -61,7 +58,12 @@ export default function AboutMe() {
               </div>
             ))}
           </div>
-          <div className="stats-quote" data-aos="fade-up" data-aos-duration="700" data-aos-delay="1000">
+          <div
+            className="stats-quote"
+            data-aos="fade-up"
+            data-aos-duration="700"
+            data-aos-delay="1000"
+          >
             Working with heart, creating with mind.
           </div>
         </div>
