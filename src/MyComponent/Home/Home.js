@@ -45,7 +45,7 @@ export default function Home() {
   return (
     <div className="home-container">
       <div className="main-content">
-        <div className="text-content">
+        <div className="Home-text-content">
           {/* Hero Title */}
           <h1 className={`hero-title fade ${stage >= 1 ? 'visible' : ''}`}>
             Hi I'm <span className="name-highlight">Sarishma Zimba</span>

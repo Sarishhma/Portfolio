@@ -59,7 +59,7 @@ html, body {
   z-index: 2; /* ensures above veil */
 }
 
-.text-content {
+.Home-text-content {
   max-width: 600px;
   width: 100%;
 }
