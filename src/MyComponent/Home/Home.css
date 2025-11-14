@@ -380,3 +380,34 @@ html, body {
 .home-container, .main-content, .text-content {
   overflow-x: visible;
 }
+/* Optimize for mobile */
+.home-container.mobile .hero-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.home-container.mobile .description-blur {
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+}
+
+/* Performance optimizations */
+.hero-title, .profile-card-section {
+  will-change: transform, opacity;
+}
+
+/* Reduce animations on mobile */
+@media (max-width: 768px) {
+  .home-container {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .fade {
+    animation-duration: 0.4s !important;
+  }
+}
+
+/* Hardware acceleration */
+.main-content {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
