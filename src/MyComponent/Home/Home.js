@@ -147,8 +147,9 @@ export default function Home() {
     contactText: "Contact Me",
     avatarUrl: "/Picture/profile.jpg",
     showUserInfo: true,
-    enableTilt: !isMobile, // Disable tilt on mobile for better performance
-    enableMobileTilt: false,
+    enableTilt: !isMobile, // Disable tilt on mobile
+    enableMobileTilt: false, // Disable mobile tilt
+    enableColorChange: !isMobile, // Disable color change effects on mobile
     onContactClick: () => handleContactClick('instagram')
   }), [isMobile, handleContactClick]);
 
@@ -167,8 +168,7 @@ export default function Home() {
               animateBy="words"
               direction="top"
               className="description-blur"
-              // Add performance optimization props if BlurText supports them
-              skipAnimation={false} // Assuming BlurText has this prop
+              skipAnimation={false}
             />
           </div>
 
