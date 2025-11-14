@@ -22,7 +22,7 @@ function Chat() {
       },
       {
         threshold: 0.1,
-        rootMargin: '-20px',
+        rootMargin: '0px',
       }
     );
 
@@ -50,9 +50,12 @@ function Chat() {
     setStatus('Sending...');
 
     try {
-      const backendUrl = 'https://protfolio-nextjs-ecru.vercel.app';
+      // FIXED: Remove trailing slash
+      const backendUrl = 'https://protfolio-nextjs-1ccy.vercel.app';
       const apiUrl = `${backendUrl}/api/send`;
       
+      console.log('Sending request to:', apiUrl);
+
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: { 
@@ -61,23 +64,18 @@ function Chat() {
         body: JSON.stringify(formData),
       });
 
+      const data = await res.json();
+      
       if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`HTTP ${res.status}: ${errorText}`);
+        throw new Error(data.message || `HTTP ${res.status}`);
       }
 
-      const data = await res.json();
       setStatus('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
 
     } catch (err) {
-      if (err.message.includes('Failed to fetch')) {
-        setStatus('Network error: Cannot connect to server.');
-      } else if (err.message.includes('404')) {
-        setStatus('API endpoint not found (404).');
-      } else {
-        setStatus(`Failed: ${err.message}`);
-      }
+      console.error('Error:', err);
+      setStatus(`Failed: ${err.message}`);
     } finally {
       setIsLoading(false);
     }
