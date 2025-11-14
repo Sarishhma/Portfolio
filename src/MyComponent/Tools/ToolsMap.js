@@ -1,7 +1,8 @@
 import React from 'react';
 import './Tools.css';
 import ShinyText from '../ShinyText/ShinyText'; 
-import { Tools } from './Tools';
+import { ToolsImages } from '../assets/Tools';
+import { Tools} from '../assets/Tools';
 
 export default function ToolsSection() {
   const rows = [];
@@ -39,19 +40,19 @@ export default function ToolsSection() {
             className="tools-row"
             data-aos="fade-up"
             data-aos-duration="600"
-            data-aos-delay={rowIndex * 150} // Reduced delay for faster animation
+            data-aos-delay={rowIndex * 150}
             data-aos-once="true"
           >
             {row.map((tool) => (
-              <div
-                key={tool.id}
-                className="tool-card"
-              >
+              <div key={tool.id} className="tool-card">
+                
+                {/* FIXED IMAGE LINE */}
                 <img
-                  src={tool.image}
+                  src={ToolsImages[tool.id]}   // 👈 Correct way after mapping imports
                   alt={tool.name}
                   className="tool-image"
                 />
+
                 <div className="tool-text">
                   <div className="tool-name">
                     <ShinyText

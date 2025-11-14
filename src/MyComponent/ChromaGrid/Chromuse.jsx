@@ -17,6 +17,6 @@ export const items = [
     technologies: ["React", "Node.js", "MongoDB", "Express", "CSS3"],
     borderColor: "#10B981",
     gradient: "linear-gradient(180deg, #10B981, #000)",
-    url: "https://hamro-store-4i9mgpvv0-sarishhmas-projects.vercel.app/"
+    url: "https://hamro-store-8jzpdi81t-sarishhmas-projects.vercel.app/"
   }
 ];

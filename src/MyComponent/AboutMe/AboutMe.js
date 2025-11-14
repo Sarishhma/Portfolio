@@ -1,4 +1,4 @@
-import Lanyard from "../Lanyard/Lanyard";
+import React, { useEffect, useRef } from 'react';
 import './AboutMe.css';
 
 const stats = [
@@ -8,46 +8,61 @@ const stats = [
 ];
 
 export default function AboutMe() {
+  const blurRef = useRef(null);
+  
+  // Optimize animations for performance
+  useEffect(() => {
+    const handleScroll = () => {
+      if (blurRef.current) {
+        const element = blurRef.current;
+        const rect = element.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+        
+        if (isVisible) {
+          element.style.animationPlayState = 'running';
+        } else {
+          element.style.animationPlayState = 'paused';
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="About-all">
-      <div className="Blur">
-
+      <div 
+        className="Blur" 
+        ref={blurRef}
+      >
         {/* Text Section */}
-        <div 
-          className="about-text-content"
-          data-aos="fade-up"
-          data-aos-duration="700"
-          data-aos-delay="100"
-        >
-          <h1 className="about-title" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
+        <div className="about-text-content">
+          <h1 className="about-title">
             About Me
           </h1>
-          <p className="paragraph" data-aos="fade-up" data-aos-duration="700" data-aos-delay="300">
+          <p className="paragraph">
             I'm Sarishma Zimba, a full-stack developer passionate about building modern, high-performance web applications with a focus on clean design and seamless user experience. I enjoy combining creativity with technical precision to craft impactful digital solutions. With attention to both functionality and aesthetics, I aim to develop products that are efficient, intuitive, and engaging. I'm continuously exploring new tools and frameworks to deliver innovative solutions that help users and businesses thrive in the digital era.
           </p>
         </div>
 
         {/* Stats Section */}
-        <div className="stats-section" data-aos="fade-up" data-aos-duration="700" data-aos-delay="600">
+        <div className="stats-section">
           <div className="stats-grid">
             {stats.map(stat => (
               <div 
                 key={stat.label} 
                 className="stat-item"
-                data-aos="fade-up"
-                data-aos-duration="400"
-                data-aos-delay={stat.delay}
               >
                 <div className="stat-number">{stat.number}</div>
                 <div className="stat-label">{stat.label}</div>
               </div>
             ))}
           </div>
-          <div className="stats-quote" data-aos="fade-up" data-aos-duration="700" data-aos-delay="1000">
+          <div className="stats-quote">
             Working with heart, creating with mind.
           </div>
         </div>
-
       </div>
     </div>
   );

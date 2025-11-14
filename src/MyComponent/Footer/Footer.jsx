@@ -3,56 +3,115 @@ import Dock from "../Dock/Dock";
 import { VscHome, VscArchive, VscAccount } from "react-icons/vsc";
 import "./Footer.css";
 
+// Memoize the items array to prevent unnecessary re-renders
+const FooterItems = [
+  { 
+    icon: <VscHome size={16} />, 
+    label: "Home", 
+    onClick: () => {
+      const homeElement = document.getElementById("home");
+      homeElement?.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start"
+      });
+    } 
+  },
+  { 
+    icon: <VscAccount size={16} />, 
+    label: "About", 
+    onClick: () => {
+      const aboutElement = document.getElementById("about");
+      aboutElement?.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start"
+      });
+    } 
+  },
+  { 
+    icon: <VscArchive size={16} />, 
+    label: "Projects", 
+    onClick: () => {
+      const projectsElement = document.getElementById("projects");
+      projectsElement?.scrollIntoView({ 
+        behavior: "smooth",
+        block: "start"
+      });
+    } 
+  },
+];
+
 const Footer = () => {
-  const items = [
-    { 
-      icon: <VscHome size={18} />, 
-      label: "Home", 
-      onClick: () => document.getElementById("home")?.scrollIntoView({ behavior: "smooth" }) 
-    },
-    { 
-      icon: <VscAccount size={18} />, 
-      label: "About Me", 
-      onClick: () => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }) 
-    },
-    { 
-      icon: <VscArchive size={18} />, 
-      label: "Project", 
-      onClick: () => document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" }) 
-    },
-  ];
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
 
   return (
-    <div className="footer-container">
+    <footer className="footer-container" role="contentinfo">
       <div className="footer-content">
-
         
+        {/* Portfolio Heading - Left */}
+        <div className="footer-brand">
+          <a 
+            href="#home" 
+            className="portfolio-heading"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToTop();
+            }}
+            aria-label="Scroll to top"
+          >
+            Portfolio
+          </a>
+        </div>
+
+        {/* Dock Navigation - Center */}
+        <div className="footer-dock">
+          <Dock 
+            items={FooterItems}
+            panelHeight={28}
+            baseItemSize={55}
+            magnification={90}
+          />
+        </div>
+
+        {/* Social Links - Right */}
         <div className="footer-social">
           <div className="social-icons">
-            <a href="https://github.com/sarishhma" className="social-link">
-              <i className="ri-github-fill ri-2x"></i>
+            <a 
+              href="https://github.com/sarishhma" 
+              className="social-link"
+              aria-label="Visit GitHub profile"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="ri-github-fill"></i>
             </a>
-            <a href="https://www.instagram.com/sarishhma/" className="social-link">
-              <i className="ri-instagram-fill ri-2x"></i>
+            <a 
+              href="https://www.instagram.com/sarishhma/" 
+              className="social-link"
+              aria-label="Visit Instagram profile"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="ri-instagram-fill"></i>
             </a>
-            <a href="https://www.linkedin.com/in/sarishma-zimba-62508936a/" className="social-link">
-            <i className="ri-linkedin-fill ri-2x"></i>
+            <a 
+              href="https://www.linkedin.com/in/sarishma-zimba-62508936a/" 
+              className="social-link"
+              aria-label="Visit LinkedIn profile"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="ri-linkedin-fill"></i>
             </a>
           </div>
         </div>
 
-        {/* Dock - Right on desktop, bottom on mobile */}
-        <div className="footer-dock">
-          <Dock 
-            items={items}
-            panelHeight={30}
-            baseItemSize={60}
-            magnification={100}
-          />
-        </div>
-
       </div>
-    </div>
+    </footer>
   );
 };
 
