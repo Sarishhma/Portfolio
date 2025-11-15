@@ -42,7 +42,7 @@ export default function AboutMe() {
             About Me
           </h1>
           <p className="paragraph">
-           I’m Sarishma Zimba, a passionate Web developer dedicated to crafting modern, high-performance web applications. I love transforming creative ideas into seamless digital experiences that are both functional and user-friendly. With hands-on experience in React, Django, and API integrations, I focus on building projects that not only look great but also deliver real value. My goal is to continuously learn, innovate, and contribute to meaningful projects that push the boundaries of technology.
+           I’m Sarishma Zimba, a passionate Web developer dedicated to crafting modern,high-performance web applications. I love transforming creative ideas into seamless digital experiences that are both functional and user-friendly. With hands-on experience in React, Django, and API integrations, I focus on building projects that not only look great but also deliver real value. My goal is to continuously learn, innovate, and contribute to meaningful projects that push the boundaries of technology.
           </p>
         </div>
 
