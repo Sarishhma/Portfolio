@@ -7,7 +7,7 @@ export const items = [
     technologies: ["React", "CSS3", "Movie API", "JavaScript"],
     borderColor: "#3B82F6",
     gradient: "linear-gradient(145deg, #3B82F6, #000)",
-    url: "https://github.com/Sarishhma/webTosearchFormovies.git"
+    url: "https://movies-one-ashy.vercel.app/"
   },
   {
     image: "/Projects/HamroStore.png",
