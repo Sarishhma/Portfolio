@@ -42,7 +42,7 @@ export default function AboutMe() {
             About Me
           </h1>
           <p className="paragraph">
-            I'm Sarishma Zimba, a full-stack developer passionate about building modern, high-performance web applications with a focus on clean design and seamless user experience. I enjoy combining creativity with technical precision to craft impactful digital solutions. With attention to both functionality and aesthetics, I aim to develop products that are efficient, intuitive, and engaging. I'm continuously exploring new tools and frameworks to deliver innovative solutions that help users and businesses thrive in the digital era.
+           I’m Sarishma Zimba, a passionate Web developer dedicated to crafting modern, high-performance web applications. I love transforming creative ideas into seamless digital experiences that are both functional and user-friendly. With hands-on experience in React, Django, and API integrations, I focus on building projects that not only look great but also deliver real value. My goal is to continuously learn, innovate, and contribute to meaningful projects that push the boundaries of technology.
           </p>
         </div>
 
@@ -60,7 +60,7 @@ export default function AboutMe() {
             ))}
           </div>
           <div className="stats-quote">
-            Working with heart, creating with mind.
+           Turning ideas into code, and code into experiences.
           </div>
         </div>
       </div>

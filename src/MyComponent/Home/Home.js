@@ -163,7 +163,7 @@ export default function Home() {
 
           <div className={`fade ${isStageReached(ANIMATION_STAGES.DESCRIPTION) ? 'visible' : ''}`}>
             <BlurText
-              text="A passionate application and web developer dedicated to crafting modern, high-performance digital experiences through innovative and user-friendly solutions."
+              text="A passionate Web developer turning innovative ideas into seamless digital experiences, driven to build modern, high-performance applications that make a difference."
               delay={isMobile ? 40 : 70} // Faster animation on mobile
               animateBy="words"
               direction="top"
