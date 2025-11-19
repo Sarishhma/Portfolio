@@ -1,117 +1,78 @@
-.App {
-  text-align: center;
+/* Add missing animation */
+@keyframes fadeInBg {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
+/* Your original CSS remains the same until the end, then add: */
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+/* ===== IPHONE SAFARI CRITICAL FIXES ===== */
+@supports (-webkit-touch-callout: none) {
+  .choose-section,
+  .project-section {
+    min-height: -webkit-fill-available;
+    height: -webkit-fill-available;
+  }
+  
+  .project-card {
+    background: rgba(30, 41, 59, 0.95);
+  }
+  
+  .tech-tag,
+  .X {
+    backdrop-filter: none;
+  }
+  
+.project-content h2,
+.chroma-grid-container .chroma-grid-title {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  -webkit-background-clip: text; /* For Safari */
+  background-clip: text; /* Standard property */
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback */
+}
+  
+  .chroma-grid-container .chroma-grid-description {
+    max-height: 2.8em;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+/* Safe area insets */
+@supports (padding: max(0px)) {
+  .choose-section,
+  .project-section {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
   }
 }
 
-.loading-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  transition: all 0.8s ease-in-out;
-}
-.loading-wrapper.fade-out {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* Overall container */
-.app-container {
-  width: 100vw;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Centered loading screen */
-.loading-wrapper {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Smooth fade-in of portfolio content after loading */
-.portfolio-content {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 1s ease-out, transform 1s ease-out;
-}
-
-.portfolio-content.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Home appears with slight delay for elegant intro */
-.fade-in-delay {
-  opacity: 0;
-  animation: fadeUp 1.3s ease-out forwards;
-  animation-delay: 0.2s;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+/* Mobile performance */
+@media (max-width: 768px) {
+  .choose-section {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    animation: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .project-card {
+    backdrop-filter: none;
+    transform: none;
+    animation: none;
+  }
+  
+  .project-card:hover {
+    transform: none;
+  }
+  
+  .floating-element {
+    filter: blur(20px);
+    opacity: 0.2;
+  }
+  
+  .project-image-container::before,
+  .project-image-container::after,
+  .project-image-wrapper::before {
+    display: none;
   }
 }
-
-/* Other sections appear gradually */
-.section.smooth-appear {
-  opacity: 0;
-  transform: translateY(25px);
-  animation: smoothIn 1s ease forwards;
-}
-
-@keyframes smoothIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-

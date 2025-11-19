@@ -93,31 +93,52 @@ html, body {
   line-height: 1.2;
   margin-bottom: 1.5rem;
   color: #ffffff;
+  
+  /* Better text wrapping */
   word-wrap: break-word;
   overflow-wrap: break-word;
+  white-space: normal;
+  display: block;
+  width: 100%;
+  
+  /* Optional: Improve readability */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .name-highlight {
-  display: inline;
+  /* Keep the name together */
+  white-space: nowrap;
+  display: inline; /* Changed from inline-block to inline */
+  
+  /* Gradient text effect */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  
+  /* Ensure proper display in all browsers */
+  position: relative;
 }
-
 .description-blur {
   font-size: 1.1rem;
   line-height: 1.6;
   color: #b0b0b0;
   margin-bottom: 2.5rem;
   max-width: 100%;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  text-align: justify;
-    word-break: keep-all;
+  
+  /* Clean text flow without hyphenation */
+  text-align: left; /* Use left-align instead of justify for cleaner look */
   hyphens: none;
-  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  
+  /* Improve readability */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
+
+
 
 /* ====== BUTTONS ====== */
 .hero-buttons {

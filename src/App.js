@@ -28,37 +28,39 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Stage 1: show loading screen
-    const t1 = setTimeout(() => {
+    // Add iPhone/Safari detection
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    console.log('Running on iOS:', isIOS);
+    
+    // Adjust timings for better performance
+    const stage1 = setTimeout(() => {
       console.log('Stage: veil');
       setStage('veil');
-    }, 2500);
+    }, 2000);
 
-    // Stage 2: show DarkVeil + Home
-    const t2 = setTimeout(() => {
+    const stage2 = setTimeout(() => {
       console.log('Stage: home');
       setStage('home');
-    }, 2700);
+    }, 2500);
 
-    // Stage 3: show rest of sections
-    const t3 = setTimeout(() => {
+    const stage3 = setTimeout(() => {
       console.log('Stage: sections');
       setStage('sections');
-    }, 3500);
+    }, 3200);
 
-    // Safety fallback - ensure we always show content
+    // Safety fallback
     const safetyTimer = setTimeout(() => {
-      console.log('Safety timer triggered, forcing sections');
+      console.log('Safety fallback triggered');
       setStage('sections');
     }, 5000);
 
-    return () => [t1, t2, t3, safetyTimer].forEach(clearTimeout);
+    return () => {
+      clearTimeout(stage1);
+      clearTimeout(stage2);
+      clearTimeout(stage3);
+      clearTimeout(safetyTimer);
+    };
   }, []);
-
-  // Debug current stage
-  useEffect(() => {
-    console.log('Current stage:', stage);
-  }, [stage]);
 
   return (
     <div className="app-container">
@@ -68,7 +70,6 @@ function App() {
         </div>
       )}
 
-      {/* Always render main content after loading, just control visibility */}
       {stage !== 'loading' && (
         <>
           <DarkVeil />
@@ -81,7 +82,10 @@ function App() {
               element={
                 <>
                   {/* Always render Home but control visibility */}
-                  <section id="home" className={`smooth-home ${stage === 'home' || stage === 'sections' ? 'visible' : ''}`}>
+                  <section 
+                    id="home" 
+                    className={`smooth-home ${stage === 'home' || stage === 'sections' ? 'visible' : ''}`}
+                  >
                     <Home />
                   </section>
 
@@ -108,7 +112,6 @@ function App() {
                 </>
               }
             />
-
             <Route path="/choose" element={<Choose />} />
           </Routes>
         </>
