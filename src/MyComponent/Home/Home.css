@@ -11,20 +11,15 @@ html, body {
   padding: 0;
   width: 100%;
   max-width: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  /* ENABLE SMOOTH SCROLLING */
   overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
-  scroll-behavior: smooth;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+ 
 }
 
 /* ====== HOME CONTAINER ====== */
 .home-container {
   min-height: 100vh;
   min-height: 100dvh;
-  z-index: 10;
-  min-height: -webkit-fill-available; /* Mobile viewport fix */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,8 +29,7 @@ html, body {
   margin: 0 auto;
   width: 100%;
   position: relative;
-  /* ENABLE SCROLLING */
-  overflow: visible;
+
 }
 
 /* Initial loading state */
@@ -56,7 +50,6 @@ html, body {
   align-items: center;
   width: 100%;
   max-width: 100%;
-  overflow: visible;
 }
 
 .text-content {
@@ -91,10 +84,6 @@ html, body {
     transform: none;
     transition: opacity 0.4s ease;
   }
-  
-  html, body {
-    scroll-behavior: auto; /* Disable smooth scroll for reduced motion */
-  }
 }
 
 /* ====== TYPOGRAPHY ====== */
@@ -104,25 +93,33 @@ html, body {
   line-height: 1.2;
   margin-bottom: 1.5rem;
   color: #ffffff;
+  
+  /* Better text wrapping */
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
   display: block;
   width: 100%;
+  
+  /* Optional: Improve readability */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 .name-highlight {
+  /* Keep the name together */
   white-space: nowrap;
-  display: inline;
+  display: inline; /* Changed from inline-block to inline */
+  
+  /* Gradient text effect */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  
+  /* Ensure proper display in all browsers */
   position: relative;
 }
-
 .description-blur {
   font-size: 1.1rem;
   line-height: 1.6;
@@ -161,8 +158,6 @@ html, body {
   position: relative;
   overflow: hidden;
   touch-action: manipulation;
-  -webkit-appearance: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
 /* Remove hover effects on touch devices */
@@ -201,29 +196,6 @@ html, body {
   transform: scale(0.98);
 }
 
-/* ====== SMOOTH SCROLLING ENHANCEMENTS ====== */
-/* Enable smooth scrolling for the entire page */
-html {
-  scroll-behavior: smooth;
-}
-
-/* iOS specific smooth scrolling */
-.home-container.ios {
-  -webkit-overflow-scrolling: touch;
-  overflow-y: auto;
-}
-
-/* Mobile performance optimizations */
-.home-container.mobile {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-}
-
-/* Ensure scrolling works on all elements */
-.main-content, .text-content, .profile-card-section {
-  overflow: visible;
-}
-
 /* ====== RESPONSIVE BREAKPOINTS ====== */
 
 /* Large desktop screens */
@@ -256,9 +228,6 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Ensure scrolling works on mobile */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .main-content {
@@ -273,12 +242,12 @@ html {
 
   /* Move profile image to top on mobile */
   .profile-card-section {
-    order: 1;
+    order: 1; /* Image comes first */
     margin-bottom: 1rem;
   }
 
   .text-content {
-    order: 2;
+    order: 2; /* Text comes after image */
     max-width: 100%;
     display: flex;
     flex-direction: column;
@@ -309,21 +278,12 @@ html {
     min-width: 160px;
     flex: 0 1 auto;
   }
-  
-  /* Mobile smooth scrolling */
-  .home-container {
-    scroll-behavior: smooth;
-  }
 }
 
 /* Mobile phones */
 @media (max-width: 480px) {
   .home-container {
     padding: 1rem;
-    /* Mobile viewport height fix */
-    min-height: 100vh;
-    min-height: 100dvh;
-    min-height: -webkit-fill-available;
   }
 
   .main-content {
@@ -429,6 +389,7 @@ html {
   -ms-hyphens: auto;
 }
 
+/* Ensure text doesn't get cut off */
 .text-content > * {
   max-width: 100%;
   overflow: visible;
@@ -438,7 +399,6 @@ html {
 .home-container, .main-content, .text-content {
   overflow-x: visible;
 }
-
 /* Optimize for mobile */
 .home-container.mobile .hero-title {
   font-size: clamp(2rem, 5vw, 3rem);
@@ -455,8 +415,12 @@ html {
 
 /* Reduce animations on mobile */
 @media (max-width: 768px) {
+  .home-container {
+    -webkit-overflow-scrolling: touch;
+  }
+  
   .fade {
-    transition-duration: 0.4s;
+    animation-duration: 0.4s !important;
   }
 }
 
@@ -465,34 +429,4 @@ html {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
-}
-
-/* Safe area insets for notch phones */
-@supports (padding: max(0px)) {
-  .home-container {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-    padding-top: max(1rem, env(safe-area-inset-top));
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-}
-
-/* ====== CRITICAL SMOOTH SCROLL FIXES ====== */
-/* Ensure body and html allow scrolling */
-body, html {
-  height: 100%;
-  overflow: auto;
-}
-
-/* Fix for iOS momentum scrolling */
-.home-container {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Remove any overflow hidden that might block scrolling */
-.home-container,
-.main-content,
-.text-content,
-.profile-card-section {
-  overflow: visible !important;
 }
