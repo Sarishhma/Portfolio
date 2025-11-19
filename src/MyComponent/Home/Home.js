@@ -17,32 +17,17 @@ const ANIMATION_STAGES = {
 };
 
 const ANIMATION_DELAYS = {
-  HERO: 400,
-  DESCRIPTION: 800,
-  BUTTONS: 1200,
-  PROFILE_CARD: 1600
+  HERO: 200,    // Reduced for mobile
+  DESCRIPTION: 400,
+  BUTTONS: 600,
+  PROFILE_CARD: 800
 };
 
 const REDUCED_MOTION_DELAYS = {
-  HERO: 100,
-  DESCRIPTION: 150,
-  BUTTONS: 200,
-  PROFILE_CARD: 250
-};
-
-// Memoized constants
-const getAnimationDelays = (prefersReducedMotion, isMobile) => {
-  const baseDelays = prefersReducedMotion ? REDUCED_MOTION_DELAYS : ANIMATION_DELAYS;
-  
-  if (!isMobile) return baseDelays;
-  
-  // Faster animations for mobile
-  return {
-    HERO: baseDelays.HERO,
-    DESCRIPTION: baseDelays.DESCRIPTION - 200,
-    BUTTONS: baseDelays.BUTTONS - 300,
-    PROFILE_CARD: baseDelays.PROFILE_CARD - 400
-  };
+  HERO: 50,
+  DESCRIPTION: 100,
+  BUTTONS: 150,
+  PROFILE_CARD: 200
 };
 
 export default function Home() {
@@ -50,30 +35,24 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const timeoutRefs = useRef([]);
-  const isInitialLoad = useRef(true);
+  const isIOS = useRef(false);
 
-  // Cleanup timeouts on unmount
-  useEffect(() => {
-    return () => {
-      timeoutRefs.current.forEach(clearTimeout);
-      // Ensure scroll is always enabled when leaving component
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-    };
-  }, []);
-
-  // Mobile detection with throttling
+  // Detect iOS and mobile
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      const width = window.innerWidth;
+      setIsMobile(width <= 768);
     };
+
+    // Check if iOS
+    isIOS.current = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
     checkMobile();
 
     let resizeTimeout;
     const handleResize = () => {
       if (resizeTimeout) clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(checkMobile, 150);
+      resizeTimeout = setTimeout(checkMobile, 200); // Increased debounce for mobile
     };
 
     window.addEventListener('resize', handleResize);
@@ -83,10 +62,23 @@ export default function Home() {
     };
   }, []);
 
-  // Animation sequence - FIXED SCROLLING ISSUE
+  // Cleanup timeouts on unmount
   useEffect(() => {
-    if (!isInitialLoad.current) return;
-    
+    return () => {
+      timeoutRefs.current.forEach(clearTimeout);
+      // Always ensure scroll is enabled
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  // Animation sequence - Mobile optimized
+  useEffect(() => {
+    // Don't disable scrolling on mobile - it causes issues
+    if (!isMobile) {
+      document.documentElement.style.overflow = 'hidden';
+    }
+
     const init = requestAnimationFrame(() => {
       window.scrollTo(0, 0);
       setIsLoaded(true);
@@ -94,7 +86,15 @@ export default function Home() {
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const prefersReducedMotion = mediaQuery.matches;
-    const delays = getAnimationDelays(prefersReducedMotion, isMobile);
+
+    // Use faster animations for mobile
+    const baseDelays = prefersReducedMotion ? REDUCED_MOTION_DELAYS : ANIMATION_DELAYS;
+    const delays = isMobile ? {
+      HERO: baseDelays.HERO,
+      DESCRIPTION: baseDelays.DESCRIPTION,
+      BUTTONS: baseDelays.BUTTONS,
+      PROFILE_CARD: baseDelays.PROFILE_CARD
+    } : baseDelays;
 
     // Clear existing timeouts
     timeoutRefs.current.forEach(clearTimeout);
@@ -108,42 +108,61 @@ export default function Home() {
       setTimeout(() => setStage(ANIMATION_STAGES.PROFILE_CARD), delays.PROFILE_CARD)
     );
 
-    // REMOVED the enableScroll timeout since we don't disable scrolling anymore
-    // Scroll is always enabled for better UX
+    // Enable scroll sooner on mobile
+    const enableScroll = setTimeout(() => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }, isMobile ? delays.PROFILE_CARD + 200 : delays.PROFILE_CARD + 500);
 
-    isInitialLoad.current = false;
+    timeoutRefs.current.push(enableScroll);
 
     return () => {
       cancelAnimationFrame(init);
       timeoutRefs.current.forEach(clearTimeout);
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
     };
   }, [isMobile]);
 
-  // Event handlers
+  // Mobile-optimized event handlers
   const handleContactClick = useCallback((platform) => {
     const url = socialLinks[platform];
     if (url) {
-      window.open(url, '_blank', 'noopener,noreferrer');
+      // Better mobile handling for external links
+      window.location.href = url;
     }
   }, []);
 
   const handleExplore = useCallback((e) => {
     e?.preventDefault();
-    scrollToSection('projects');
+    // Add small delay for mobile to ensure smooth scroll
+    setTimeout(() => {
+      scrollToSection('projects');
+    }, 100);
   }, []);
 
   const handleDownloadCV = useCallback(() => {
+    // Mobile-optimized download
     requestAnimationFrame(() => {
       const link = document.createElement('a');
       link.href = '/cv/sarishma.pdf';
       link.download = 'sarishma_cv.pdf';
       link.style.display = 'none';
+      
+      // iOS specific handling
+      if (isIOS.current) {
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+      }
+      
       document.body.appendChild(link);
       link.click();
       
       setTimeout(() => {
-        document.body.removeChild(link);
-      }, 100);
+        if (document.body.contains(link)) {
+          document.body.removeChild(link);
+        }
+      }, 1000); // Longer timeout for mobile
     });
   }, []);
 
@@ -158,24 +177,23 @@ export default function Home() {
     contactText: "Contact Me",
     avatarUrl: "/Picture/profile.jpg",
     showUserInfo: true,
-    enableTilt: !isMobile,
+    enableTilt: !isMobile && !isIOS.current, // Disable tilt on mobile and iOS
     enableMobileTilt: false,
-    enableColorChange: !isMobile,
+    enableColorChange: !isMobile, // Disable color change on mobile
     onContactClick: () => handleContactClick('instagram')
   }), [isMobile, handleContactClick]);
 
   const blurTextProps = useMemo(() => ({
     text: "A passionate Web developer turning innovative ideas into seamless digital experiences, driven to build modern, high-performance applications that make a difference.",
-    delay: isMobile ? 40 : 70,
+    delay: isMobile ? 20 : 50, // Much faster on mobile
     animateBy: "words",
     direction: "top",
     className: "description-blur",
-    skipAnimation: false
+    skipAnimation: isMobile // Consider skipping animation on very slow devices
   }), [isMobile]);
 
-  // Container classes
   const containerClasses = useMemo(() => 
-    `home-container ${isLoaded ? 'loaded' : ''} ${isMobile ? 'mobile' : ''}`,
+    `home-container ${isLoaded ? 'loaded' : ''} ${isMobile ? 'mobile' : ''} ${isIOS.current ? 'ios' : ''}`,
     [isLoaded, isMobile]
   );
 

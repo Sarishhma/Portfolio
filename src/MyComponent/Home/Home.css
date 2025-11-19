@@ -439,3 +439,75 @@ html, body {
   backface-visibility: hidden;
   perspective: 1000;
 }
+/* ====== MOBILE & IOS SPECIFIC FIXES ====== */
+.home-container.ios {
+  /* iOS specific fixes */
+  -webkit-overflow-scrolling: touch;
+  height: 100vh;
+  height: -webkit-fill-available;
+}
+
+.home-container.mobile {
+  /* Mobile performance optimizations */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Ensure proper viewport height on mobile */
+.home-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
+}
+
+/* Fix for iOS scrolling */
+.main-content {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile performance for animations */
+@media (max-width: 768px) {
+  .fade {
+    transition: all 0.4s ease-out;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  
+  .hero-title, .profile-card-section {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Prevent text size adjustment on iOS */
+@media screen and (max-device-width: 480px) {
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+}
+
+/* Fix for iOS button styles */
+.btn {
+  -webkit-appearance: none;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+}
+
+/* Hardware acceleration for mobile */
+.home-container.mobile .main-content {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Safe area insets for notch phones */
+@supports (padding: max(0px)) {
+  .home-container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
