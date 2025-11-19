@@ -29,7 +29,7 @@ html, body {
   margin: 0 auto;
   width: 100%;
   position: relative;
-
+ min-height: -webkit-fill-available;
 }
 
 /* Initial loading state */
@@ -415,6 +415,9 @@ html, body {
 
 /* Reduce animations on mobile */
 @media (max-width: 768px) {
+    input, select, textarea {
+    font-size: 16px; /* Prevents zoom on focus */
+  }
   .home-container {
     -webkit-overflow-scrolling: touch;
   }
@@ -429,4 +432,12 @@ html, body {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
+}
+@supports (padding: max(0px)) {
+  .home-container {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-top: max(1rem, env(safe-area-inset-top));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
 }

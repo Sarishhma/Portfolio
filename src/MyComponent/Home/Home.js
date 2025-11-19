@@ -73,57 +73,41 @@ export default function Home() {
   }, []);
 
   // Animation sequence - Mobile optimized
-  useEffect(() => {
-    // Don't disable scrolling on mobile - it causes issues
-    if (!isMobile) {
-      document.documentElement.style.overflow = 'hidden';
-    }
+// Animation sequence - FIXED for mobile
+useEffect(() => {
+  const init = requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    setIsLoaded(true);
+  });
 
-    const init = requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-      setIsLoaded(true);
-    });
+  const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = mediaQuery.matches;
 
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const prefersReducedMotion = mediaQuery.matches;
+  const baseDelays = prefersReducedMotion ? REDUCED_MOTION_DELAYS : ANIMATION_DELAYS;
+  const delays = isMobile ? {
+    HERO: baseDelays.HERO,
+    DESCRIPTION: baseDelays.DESCRIPTION,
+    BUTTONS: baseDelays.BUTTONS,
+    PROFILE_CARD: baseDelays.PROFILE_CARD
+  } : baseDelays;
 
-    // Use faster animations for mobile
-    const baseDelays = prefersReducedMotion ? REDUCED_MOTION_DELAYS : ANIMATION_DELAYS;
-    const delays = isMobile ? {
-      HERO: baseDelays.HERO,
-      DESCRIPTION: baseDelays.DESCRIPTION,
-      BUTTONS: baseDelays.BUTTONS,
-      PROFILE_CARD: baseDelays.PROFILE_CARD
-    } : baseDelays;
+  // Clear existing timeouts
+  timeoutRefs.current.forEach(clearTimeout);
+  timeoutRefs.current = [];
 
-    // Clear existing timeouts
+  // Set new timeouts
+  timeoutRefs.current.push(
+    setTimeout(() => setStage(ANIMATION_STAGES.HERO), delays.HERO),
+    setTimeout(() => setStage(ANIMATION_STAGES.DESCRIPTION), delays.DESCRIPTION),
+    setTimeout(() => setStage(ANIMATION_STAGES.BUTTONS), delays.BUTTONS),
+    setTimeout(() => setStage(ANIMATION_STAGES.PROFILE_CARD), delays.PROFILE_CARD)
+  );
+
+  return () => {
+    cancelAnimationFrame(init);
     timeoutRefs.current.forEach(clearTimeout);
-    timeoutRefs.current = [];
-
-    // Set new timeouts
-    timeoutRefs.current.push(
-      setTimeout(() => setStage(ANIMATION_STAGES.HERO), delays.HERO),
-      setTimeout(() => setStage(ANIMATION_STAGES.DESCRIPTION), delays.DESCRIPTION),
-      setTimeout(() => setStage(ANIMATION_STAGES.BUTTONS), delays.BUTTONS),
-      setTimeout(() => setStage(ANIMATION_STAGES.PROFILE_CARD), delays.PROFILE_CARD)
-    );
-
-    // Enable scroll sooner on mobile
-    const enableScroll = setTimeout(() => {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-    }, isMobile ? delays.PROFILE_CARD + 200 : delays.PROFILE_CARD + 500);
-
-    timeoutRefs.current.push(enableScroll);
-
-    return () => {
-      cancelAnimationFrame(init);
-      timeoutRefs.current.forEach(clearTimeout);
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-    };
-  }, [isMobile]);
-
+  };
+}, [isMobile]);
   // Mobile-optimized event handlers
   const handleContactClick = useCallback((platform) => {
     const url = socialLinks[platform];
