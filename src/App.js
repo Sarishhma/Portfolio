@@ -13,8 +13,11 @@ import Footer from './MyComponent/Footer/Footer';
 import Chat from './MyComponent/ChatRoom/Chat';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
 function App() {
-    useEffect(() => {
+  const [stage, setStage] = useState('loading'); 
+  
+  useEffect(() => {
     AOS.init({
       duration: 800,
       easing: 'ease-in-out',
@@ -23,21 +26,39 @@ function App() {
       offset: 100
     });
   }, []);
-  const [stage, setStage] = useState('loading'); 
-  // stages: 'loading' → 'veil' → 'home' → 'sections'
 
   useEffect(() => {
     // Stage 1: show loading screen
-    const t1 = setTimeout(() => setStage('veil'), 2500);
+    const t1 = setTimeout(() => {
+      console.log('Stage: veil');
+      setStage('veil');
+    }, 2500);
 
     // Stage 2: show DarkVeil + Home
-    const t2 = setTimeout(() => setStage('home'), 2700);
+    const t2 = setTimeout(() => {
+      console.log('Stage: home');
+      setStage('home');
+    }, 2700);
 
     // Stage 3: show rest of sections
-    const t3 = setTimeout(() => setStage('sections'), 3500);
+    const t3 = setTimeout(() => {
+      console.log('Stage: sections');
+      setStage('sections');
+    }, 3500);
 
-    return () => [t1, t2, t3].forEach(clearTimeout);
+    // Safety fallback - ensure we always show content
+    const safetyTimer = setTimeout(() => {
+      console.log('Safety timer triggered, forcing sections');
+      setStage('sections');
+    }, 5000);
+
+    return () => [t1, t2, t3, safetyTimer].forEach(clearTimeout);
   }, []);
+
+  // Debug current stage
+  useEffect(() => {
+    console.log('Current stage:', stage);
+  }, [stage]);
 
   return (
     <div className="app-container">
@@ -47,39 +68,46 @@ function App() {
         </div>
       )}
 
+      {/* Always render main content after loading, just control visibility */}
       {stage !== 'loading' && (
         <>
-          {/* Render DarkVeil instantly after loading */}
           <DarkVeil />
+          
+          <Header />
 
           <Routes>
             <Route
               path="/"
               element={
                 <>
-                  <Header />
+                  {/* Always render Home but control visibility */}
+                  <section id="home" className={`smooth-home ${stage === 'home' || stage === 'sections' ? 'visible' : ''}`}>
+                    <Home />
+                  </section>
 
-                  {/* Home fades in first */}
-                  {stage !== 'loading' && (
-                    <section id="home" className={`smooth-home ${stage === 'home' ? 'visible' : ''}`}>
-                      <Home />
-                    </section>
-                  )}
-
-                  {/* Then, after a short delay, rest of sections */}
+                  {/* Render other sections when ready */}
                   {stage === 'sections' && (
                     <>
-                      <section id="about" className="smooth-section"><AboutMe /></section>
-                      <section id="tools" className="smooth-section"><ToolsMap /></section>
-                      <section id="projects" className="smooth-section"><Projects /></section>
-                      <section id="chat" className="smooth-section"><Chat /></section>
-                      <section id="footer" className="smooth-section"><Footer /></section>
+                      <section id="about" className="smooth-section">
+                        <AboutMe />
+                      </section>
+                      <section id="tools" className="smooth-section">
+                        <ToolsMap />
+                      </section>
+                      <section id="projects" className="smooth-section">
+                        <Projects />
+                      </section>
+                      <section id="chat" className="smooth-section">
+                        <Chat />
+                      </section>
+                      <section id="footer" className="smooth-section">
+                        <Footer />
+                      </section>
                     </>
                   )}
                 </>
               }
             />
-
 
             <Route path="/choose" element={<Choose />} />
           </Routes>
