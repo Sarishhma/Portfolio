@@ -50,12 +50,15 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const timeoutRefs = useRef([]);
+  const isInitialLoad = useRef(true);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
       timeoutRefs.current.forEach(clearTimeout);
-      document.documentElement.style.overflow = 'auto';
+      // Ensure scroll is always enabled when leaving component
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -80,11 +83,12 @@ export default function Home() {
     };
   }, []);
 
-  // Animation sequence
+  // Animation sequence - FIXED SCROLLING ISSUE
   useEffect(() => {
+    if (!isInitialLoad.current) return;
+    
     const init = requestAnimationFrame(() => {
       window.scrollTo(0, 0);
-      document.documentElement.style.overflow = 'hidden';
       setIsLoaded(true);
     });
 
@@ -104,11 +108,10 @@ export default function Home() {
       setTimeout(() => setStage(ANIMATION_STAGES.PROFILE_CARD), delays.PROFILE_CARD)
     );
 
-    const enableScroll = setTimeout(() => {
-      document.documentElement.style.overflow = 'auto';
-    }, delays.PROFILE_CARD + 500);
+    // REMOVED the enableScroll timeout since we don't disable scrolling anymore
+    // Scroll is always enabled for better UX
 
-    timeoutRefs.current.push(enableScroll);
+    isInitialLoad.current = false;
 
     return () => {
       cancelAnimationFrame(init);
