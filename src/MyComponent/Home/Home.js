@@ -66,9 +66,7 @@ export default function Home() {
   useEffect(() => {
     return () => {
       timeoutRefs.current.forEach(clearTimeout);
-      // Always ensure scroll is enabled
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
+      
     };
   }, []);
 
