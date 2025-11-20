@@ -1,20 +1,3 @@
-/* ====== GLOBAL RESET & BASE STYLES ====== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  max-width: 100%;
-  /* REMOVE overflow-x: hidden - This causes issues */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
 /* ====== HOME CONTAINER ====== */
 .home-container {
   min-height: 100vh;
@@ -28,11 +11,10 @@ html, body {
   margin: 0 auto;
   width: 100%;
   position: relative;
-  /* ADD: Prevent overflow issues */
-  overflow: hidden;
+  z-index: 10;
 }
 
-/* Safe area support */
+/* Safe area support for iPhone */
 @supports (padding: max(0px)) {
   .home-container {
     padding-left: max(1rem, env(safe-area-inset-left));
@@ -42,75 +24,31 @@ html, body {
   }
 }
 
-/* Initial loading state */
-.home-container:not(.loaded) {
-  opacity: 0;
-}
-
-.home-container.loaded {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
 /* ====== MAIN LAYOUT ====== */
 .main-content {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 3rem;
+  gap: 2rem;
   align-items: center;
   width: 100%;
   max-width: 100%;
-  /* ADD: Prevent internal overflow */
-  overflow: visible;
 }
 
 .text-content {
-  max-width: 600px;
+  max-width: 500px; /* Reduced from 600px */
   width: 100%;
-  /* ADD: Prevent text overflow */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
 }
 
-.profile-card-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  order: 2;
-}
-
-/* ====== ANIMATIONS ====== */
-.fade {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.fade.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fade {
-    transform: none;
-    transition: opacity 0.4s ease;
-  }
-}
-
-/* ====== TYPOGRAPHY ====== */
+/* ====== TYPOGRAPHY - FIXED FOR IPHONE ====== */
 .hero-title {
-  font-size: clamp(2rem, 5vw, 3rem); /* Responsive like AboutMe */
+  font-size: clamp(1.8rem, 4vw, 2.5rem); /* Smaller for iPhone */
   font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
+  line-height: 1.3; /* Tighter line height */
+  margin-bottom: 1rem; /* Reduced margin */
   color: #ffffff;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  /* ADD: Better text handling */
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  text-align: left;
 }
 
 .name-highlight {
@@ -123,109 +61,68 @@ html, body {
 }
 
 .description-blur {
-  font-size: clamp(1rem, 2.5vw, 1.1rem); /* Responsive like AboutMe */
-  line-height: 1.6;
+  font-size: clamp(0.9rem, 3vw, 1rem); /* Smaller font */
+  line-height: 1.5; /* Tighter line height */
   color: #b0b0b0;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
   max-width: 100%;
   text-align: left;
-  /* ADD: Better text handling */
+  /* Better text wrapping for mobile */
+  word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
 }
 
-/* ====== BUTTONS ====== */
+/* ====== BUTTONS - COMPACT FOR IPHONE ====== */
 .hero-buttons {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem; /* Smaller gap */
   flex-wrap: wrap;
 }
 
 .btn {
-  padding: 0.875rem 2rem;
+  padding: 0.75rem 1.5rem; /* Smaller padding */
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Smaller font */
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  min-width: 160px;
+  min-height: 44px; /* Better touch target */
+  min-width: 140px; /* Smaller min-width */
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-}
+/* ====== IPHONE SPECIFIC FIXES ====== */
 
-.btn-secondary {
-  background: transparent;
-  color: #ffffff;
-  border: 1px solid #444;
-}
-
-/* Remove hover effects on touch devices */
-@media (hover: none) {
-  .btn:hover {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-}
-
-.btn-secondary:hover {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
-  transform: translateY(-2px);
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-/* ====== RESPONSIVE BREAKPOINTS ====== */
-
-/* Tablets and small laptops */
-@media (max-width: 1024px) {
-  .main-content {
-    gap: 2.5rem;
-  }
-}
-
-/* Tablets - switch to single column */
+/* iPhone portrait */
 @media (max-width: 768px) {
   .home-container {
-    padding: 2rem 1rem; /* Consistent with AboutMe */
+    padding: 1rem;
     min-height: 100vh;
     min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* REMOVE: overflow-y: auto - This causes scrollbars */
   }
 
   .main-content {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
-    gap: 2rem; /* Reasonable gap like AboutMe */
+    gap: 1.5rem; /* Smaller gap */
     text-align: center;
     width: 100%;
-    max-width: 500px; /* Good max-width like AboutMe */
+    max-width: 400px; /* Constrain width */
     margin: 0 auto;
+    padding: 0 0.5rem; /* Add some padding */
   }
 
   .profile-card-section {
     order: 1;
-    margin-bottom: 1rem;
-    /* Remove transform: scale - let it be natural size */
+    margin-bottom: 0.5rem;
+    /* Remove any scaling to prevent cutoff */
   }
 
   .text-content {
@@ -234,142 +131,123 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 0.5rem; /* Prevent edge touching */
   }
 
   .hero-title {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    margin-bottom: 1.25rem;
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Even smaller for iPhone */
+    margin-bottom: 0.75rem;
+    text-align: center;
+    width: 100%;
+    line-height: 1.2;
   }
 
   .description-blur {
-    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    margin-bottom: 2rem;
+    font-size: clamp(0.85rem, 3vw, 0.95rem);
+    margin-bottom: 1.5rem;
     text-align: center;
-    line-height: 1.6;
+    line-height: 1.4;
+    padding: 0 0.25rem; /* Prevent text touching edges */
   }
 
   .hero-buttons {
     justify-content: center;
     width: 100%;
-    gap: 0.875rem;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
   }
 
   .btn {
-    min-width: 160px;
-    flex: 0 1 auto;
+    min-width: 120px; /* Even smaller buttons */
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
   }
 }
 
-/* Mobile phones */
-@media (max-width: 480px) {
+/* Small iPhones (iPhone SE, 12/13 mini) */
+@media (max-width: 375px) {
   .home-container {
-    padding: 1.5rem 1rem; /* Consistent with AboutMe */
+    padding: 0.75rem;
   }
 
   .main-content {
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 400px; /* Slightly smaller for phones */
+    gap: 1rem;
+    max-width: 320px;
   }
 
-  .profile-card-section {
+  .hero-title {
+    font-size: 1.4rem;
     margin-bottom: 0.5rem;
   }
 
-  .hero-title {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    margin-bottom: 1rem;
-  }
-
   .description-blur {
-    font-size: clamp(0.85rem, 2.5vw, 1rem);
-    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
   }
 
   .hero-buttons {
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    gap: 0.75rem;
+    gap: 0.4rem;
   }
 
   .btn {
-    width: 100%;
-    max-width: 280px;
-    min-width: auto;
+    min-width: 110px;
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
   }
 }
 
-/* Small mobile phones */
-@media (max-width: 360px) {
-  .home-container {
-    padding: 1rem;
-  }
-
-  .main-content {
-    max-width: 320px;
-    gap: 1rem;
-  }
-
-  .hero-title {
-    font-size: clamp(1.4rem, 4vw, 1.75rem);
-  }
-
-  .description-blur {
-    font-size: clamp(0.8rem, 2.5vw, 0.9rem);
-    margin-bottom: 1.5rem;
-  }
-}
-
-/* Landscape orientation */
+/* iPhone landscape */
 @media (max-width: 768px) and (orientation: landscape) {
   .home-container {
-    padding: 1rem;
+    padding: 0.5rem;
     min-height: auto;
   }
-  
+
   .main-content {
     gap: 1rem;
     max-width: 90%;
+    grid-template-columns: 1fr auto; /* Side by side in landscape */
+    grid-template-rows: 1fr;
+    align-items: center;
   }
-}
 
-/* ====== SCROLLBAR STYLING ====== */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #667eea;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #764ba2;
-}
-
-/* ====== ACCESSIBILITY ====== */
-@media (prefers-contrast: high) {
-  .btn-secondary {
-    border-color: #ffffff;
+  .profile-card-section {
+    order: 2;
+    margin-bottom: 0;
+    transform: scale(0.8); /* Scale down profile card */
   }
-  
+
+  .text-content {
+    order: 1;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .hero-title {
+    font-size: 1.3rem;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+
   .description-blur {
-    color: #ffffff;
+    font-size: 0.75rem;
+    text-align: left;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .hero-buttons {
+    justify-content: flex-start;
   }
 }
 
-/* Reduce animations on mobile */
-@media (max-width: 768px) {
-  input, select, textarea {
-    font-size: 16px;
-  }
-  
-  .fade {
-    transition-duration: 0.4s !important;
+/* iPhone notch support */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+    .home-container {
+      padding-top: max(1rem, env(safe-area-inset-top));
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
   }
 }
