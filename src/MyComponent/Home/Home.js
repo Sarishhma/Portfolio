@@ -70,13 +70,15 @@ export default function Home() {
     onContactClick: handleContactClick
   }), [isMobile, handleContactClick]);
 
-  const blurTextProps = useMemo(() => ({
-    text: "A passionate Web developer turning innovative ideas into high-performance applications.",
-    delay: 30,
-    animateBy: "words",
-    direction: "top",
-    className: "description-blur"
-  }), []);
+const blurTextProps = useMemo(() => ({
+  text: isMobile 
+    ? "A passionate Web developer."
+    : "A passionate Web developer turning innovative ideas into seamless digital experiences, driven to build modern, high-performance applications that make a difference.",
+  delay: 30,
+  animateBy: "words",
+  direction: "top",
+  className: "description-blur"
+}), [isMobile]); 
 
   return (
     <div className={`home-container ${isLoaded ? 'loaded' : ''}`}>

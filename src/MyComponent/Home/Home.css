@@ -78,6 +78,7 @@
   display: flex;
   gap: 0.75rem; /* Smaller gap */
   flex-wrap: wrap;
+  
 }
 
 .btn {
