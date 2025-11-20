@@ -71,7 +71,7 @@ export default function Home() {
   }), [isMobile, handleContactClick]);
 
   const blurTextProps = useMemo(() => ({
-    text: "A passionate Web developer turning innovative ideas into seamless digital experiences, driven to build modern applications that make a difference.",
+    text: "A passionate Web developer turning innovative ideas into high-performance applications.",
     delay: 30,
     animateBy: "words",
     direction: "top",
